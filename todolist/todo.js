@@ -47,44 +47,64 @@ var deleteTodo = function(container, todoCell) {
 }
 
 // 给 add button 绑定添加 todo 事件
-var addButton = e('#id-button-add')
-addButton.addEventListener('click', function() {
-    log('click')
-    // 获得 input.value
-    // 1. 获取一个元素
-    var todoInput = e('#id-input-todo')
-    // 2. 用 .value 属性获取用户输入的字符串
-    var todo = todoInput.value
-    log('todo value', todo, typeof todo)
-    // 存储到 localStorage 中
-    saveTodo(todo)
-    // 添加到 container 中
+var bindEventAdd = function() {
+    var addButton = e('#id-button-add')
+    addButton.addEventListener('click', function() {
+        log('click')
+        // 获得 input.value
+        // 1. 获取一个元素
+        var todoInput = e('#id-input-todo')
+        // 2. 用 .value 属性获取用户输入的字符串
+        var todo = todoInput.value
+        log('todo value', todo, typeof todo)
+        // 存储到 localStorage 中
+        saveTodo(todo)
+        // 添加到 container 中
+        var todoContainer = e('#id-div-container')
+        var t = templateTodo(todo)
+        todoContainer.insertAdjacentHTML('beforeend', t)
+    })
+}
+
+// 给delete button添加事件
+var bindEventDelete = function() {
     var todoContainer = e('#id-div-container')
-    var t = templateTodo(todo)
-    todoContainer.insertAdjacentHTML('beforeend', t)
-})
-// 给完成和删除添加事件
-var todoContainer = e('#id-div-container')
-todoContainer.addEventListener('click', function(event) {
-    log('container click', event, event.target)
-    // 获取被点击的元素
-    var target = event.target
-    // 得到被点击的元素后, 通过查看它的 class 来判断它是哪个按钮
-    if (target.classList.contains('todo-done')) {
-        log('done')
-        // 给 doto div 开关一个状态 class
-        // parentElement 是找到父元素
-        var todoDiv = target.parentElement
-        todoDiv.classList.toggle('done')
-    } else if (target.classList.contains('todo-delete')) {
-        log('delete')
-        var todoCell = target.parentElement
-        var container = todoCell.parentElement
-        // 点击删除的时候, 从 localStorage 里面删除相应的 todo
-        deleteTodo(container, todoCell)
-        todoCell.remove()
-    }
-})
+    todoContainer.addEventListener('click', function(event) {
+        log('container click', event, event.target)
+        // 获取被点击的元素
+        var target = event.target
+        // 得到被点击的元素后, 通过查看它的 class 来判断它是哪个按钮
+        if (target.classList.contains('todo-delete')) {
+            log('delete')
+            var todoCell = target.parentElement
+            var container = todoCell.parentElement
+            // 点击删除的时候, 从 localStorage 里面删除相应的 todo
+            deleteTodo(container, todoCell)
+            todoCell.remove()
+        }
+    })
+}
+
+// 给完成添加事件
+var bindEventDone = function() {
+    var todoContainer = e('#id-div-container')
+    todoContainer.addEventListener('click', function(event) {
+        log('container click', event, event.target)
+        // 获取被点击的元素
+        var target = event.target
+        // 得到被点击的元素后, 通过查看它的 class 来判断它是哪个按钮
+        if (target.classList.contains('todo-done')) {
+            log('done')
+            // 给 doto div 开关一个状态 class
+            // parentElement 是找到父元素
+            var todoDiv = target.parentElement
+            todoDiv.classList.toggle('done')
+        }
+    })
+}
+
+
+// 添加编辑功能
 
 // 把所有的 todos 插入到页面中
 var insertTodos = function(todos) {
@@ -97,4 +117,11 @@ var insertTodos = function(todos) {
         todoContainer.insertAdjacentHTML('beforeend', t)
     }
 }
-insertTodos(todos)
+
+var _main = function() {
+    insertTodos(todos)
+    bindEventAdd()
+    bindEventDelete()
+    bindEventDone()
+}
+_main()
