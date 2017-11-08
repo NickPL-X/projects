@@ -2,9 +2,10 @@
 var templateTodo = function(todo) {
     var t = `
         <div class="todo-cell">
-            <button class="todo-done">完成</button>
-            <button class="todo-delete">删除</button>
             <span contenteditable="true">${todo}</span>
+            <i class="todo-done fa fa-square-o" aria-hidden="true"></i>
+            <i class="todo-edit fa fa-pencil" aria-hidden="true"></i>
+            <i class="todo-delete fa fa-trash-o fa-fw"></i>
         </div>
     `
     return t
@@ -36,16 +37,47 @@ var deleteTodo = function(container, todoCell) {
     // 遍历 container 的所有子元素
     for (var i = 0; i < container.children.length; i++) {
         var todo = container.children[i]
+        // log('i',i)
+        // log('todo',todo)
         // 如果 todo 和 todoCell 是同一个元素,
         // 说明 i 就是我们要找的下标
         if (todo == todoCell) {
+            log('i',i)
+            log('todo', todo)
             todos.splice(i, 1)
             var s = JSON.stringify(todos)
             localStorage.savedTodos = s
+            // log(todos,'todos')
         }
     }
 }
 
+// 编辑 todo
+var editTodo = function(container, todoCell) {
+    // 遍历 container 的所有子元素
+    for (var i = 0; i < container.children.length; i++) {
+        var todo = container.children[i]
+        // 如果 todo 和 todoCell 是同一个元素,
+        // 说明 i 就是我们要找的下标
+        if (todo == todoCell) {
+            // 得到修改后的字符串并更新
+            todos[i] = todo.innerText
+            var s = JSON.stringify(todos)
+            localStorage.savedTodos = s
+            // log(todos,'todos')
+        }
+    }
+}
+// 交换某个元素 class 的函数
+var exchangeClass = function(element, className1, className2) {
+    if (element.classList.contains(className1)) {
+        element.classList.remove(className1)
+        element.classList.add(className2)
+    } else {
+        element.classList.remove(className2)
+        element.classList.add(className1)
+    }
+}
 // 给 add button 绑定添加 todo 事件
 var bindEventAdd = function() {
     var addButton = e('#id-button-add')
@@ -70,7 +102,7 @@ var bindEventAdd = function() {
 var bindEventDelete = function() {
     var todoContainer = e('#id-div-container')
     todoContainer.addEventListener('click', function(event) {
-        log('container click', event, event.target)
+        // log('container click', event, event.target)
         // 获取被点击的元素
         var target = event.target
         // 得到被点击的元素后, 通过查看它的 class 来判断它是哪个按钮
@@ -89,22 +121,34 @@ var bindEventDelete = function() {
 var bindEventDone = function() {
     var todoContainer = e('#id-div-container')
     todoContainer.addEventListener('click', function(event) {
-        log('container click', event, event.target)
+        // log('container click', event, event.target)
         // 获取被点击的元素
         var target = event.target
         // 得到被点击的元素后, 通过查看它的 class 来判断它是哪个按钮
         if (target.classList.contains('todo-done')) {
-            log('done')
-            // 给 doto div 开关一个状态 class
-            // parentElement 是找到父元素
-            var todoDiv = target.parentElement
-            todoDiv.classList.toggle('done')
+            var className1 = 'fa-square-o'
+            var className2 = 'fa-check-square-o'
+            exchangeClass(target, className1, className2)
         }
     })
 }
 
-
 // 添加编辑功能
+var bindEventEdit = function() {
+    var todoContainer = e('#id-div-container')
+    todoContainer.addEventListener('click', function(event) {
+        log('container click', event, event.target)
+        // 获取被点击的元素
+        var target = event.target
+        // 得到被点击的元素后, 通过查看它的 class 来判断它是哪个按钮
+        if (target.classList.contains('todo-edit')) {
+            var todoCell = target.parentElement
+            var container = todoCell.parentElement
+            // 点击编辑的时候, 将修改后的内容加入 localstorge 中
+            editTodo(container, todoCell)
+        }
+    })
+}
 
 // 把所有的 todos 插入到页面中
 var insertTodos = function(todos) {
@@ -112,8 +156,6 @@ var insertTodos = function(todos) {
         var todo = todos[i]
         var todoContainer = e('#id-div-container')
         var t = templateTodo(todo)
-        // 这个方法用来添加元素
-        // 第一个参数 'beforeend' 意思是放在最后
         todoContainer.insertAdjacentHTML('beforeend', t)
     }
 }
@@ -123,5 +165,6 @@ var _main = function() {
     bindEventAdd()
     bindEventDelete()
     bindEventDone()
+    bindEventEdit()
 }
 _main()
