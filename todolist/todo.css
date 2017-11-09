@@ -1,0 +1,122 @@
+body {
+    background: #cac7c7;
+}
+
+.main {
+    margin: 100px auto;
+    width: 500px;
+    height: 700px;
+    background: #eee;
+    border-radius: 10px;
+}
+
+.todo-form {
+    margin: 50px 10px;
+    position: relative;
+    top: 30px;
+}
+
+#id-div-container {
+    margin: 0 auto;
+    width: 300px;
+}
+
+#id-input-todo {
+    display: inline-block;
+    text-align: center;
+    border: #ffc21f 1px solid;
+    font-size: 30px;
+}
+
+#id-input-todo:hover {
+    text-align: center;
+    border: #ffc21f 1px solid;
+    font-size: 30px;
+    transform: scale(1.03,1.1);
+}
+
+#id-button-add {
+    display: inline-block;
+    padding: 0 47px;
+    background: #231f20;
+    border: #ffc21f 1px solid;
+    color: #ffc21f;
+    font-size: 30px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#id-button-add:hover {
+    transition-property: background-color, color;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
+    background-color: white;
+    color: black;
+}
+
+#id-input-todo {
+    display: inline-block;
+    text-align: center;
+    border: #ffc21f 1px solid;
+    font-size: 30px;
+    transition: 0.5s;
+}
+
+#input-todo:hover {
+    transform: scale(1.1, 1.1);
+    display: inline-block;
+    text-align: center;
+    border: #ffc21f 1px solid;
+    font-size: 30px;
+}
+
+#id-div-container {
+    margin: 0 auto;
+    width: 300px;
+}
+
+.todo-cell {
+    font-size: 30px;
+    border-bottom: 1px solid rgba(0,0,0,.1);
+}
+.todo-cell:hover {
+    font-size: 30px;
+    background-color: lightblue;
+}
+
+.todo-done {
+    position: relative;
+    left: -30px;
+    top: 3px;
+}
+
+span {
+    width: 59%;
+    display: inline-block;
+    position: relative;
+    left: -27px;
+}
+
+.todo-edit {
+    display: inline-block;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.todo-edit:hover {
+    display: inline-block;
+    cursor: pointer;
+    transform: scale(1.2,1.2);
+}
+
+.todo-delete {
+    display: inline-block;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.todo-delete:hover {
+    display: inline-block;
+    cursor: pointer;
+    transform: scale(1.2,1.2);
+}

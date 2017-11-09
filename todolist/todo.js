@@ -2,8 +2,8 @@
 var templateTodo = function(todo) {
     var t = `
         <div class="todo-cell">
-            <span contenteditable="true">${todo}</span>
             <i class="todo-done fa fa-square-o" aria-hidden="true"></i>
+            <span contenteditable="true">${todo}</span>
             <i class="todo-edit fa fa-pencil" aria-hidden="true"></i>
             <i class="todo-delete fa fa-trash-o fa-fw"></i>
         </div>
@@ -42,8 +42,8 @@ var deleteTodo = function(container, todoCell) {
         // 如果 todo 和 todoCell 是同一个元素,
         // 说明 i 就是我们要找的下标
         if (todo == todoCell) {
-            log('i',i)
-            log('todo', todo)
+            // log('i',i)
+            // log('todo', todo)
             todos.splice(i, 1)
             var s = JSON.stringify(todos)
             localStorage.savedTodos = s
@@ -82,13 +82,13 @@ var exchangeClass = function(element, className1, className2) {
 var bindEventAdd = function() {
     var addButton = e('#id-button-add')
     addButton.addEventListener('click', function() {
-        log('click')
+        // log('click')
         // 获得 input.value
         // 1. 获取一个元素
         var todoInput = e('#id-input-todo')
         // 2. 用 .value 属性获取用户输入的字符串
         var todo = todoInput.value
-        log('todo value', todo, typeof todo)
+        // log('todo value', todo, typeof todo)
         // 存储到 localStorage 中
         saveTodo(todo)
         // 添加到 container 中
@@ -107,7 +107,7 @@ var bindEventDelete = function() {
         var target = event.target
         // 得到被点击的元素后, 通过查看它的 class 来判断它是哪个按钮
         if (target.classList.contains('todo-delete')) {
-            log('delete')
+            // log('delete')
             var todoCell = target.parentElement
             var container = todoCell.parentElement
             // 点击删除的时候, 从 localStorage 里面删除相应的 todo
@@ -137,7 +137,7 @@ var bindEventDone = function() {
 var bindEventEdit = function() {
     var todoContainer = e('#id-div-container')
     todoContainer.addEventListener('click', function(event) {
-        log('container click', event, event.target)
+        // log('container click', event, event.target)
         // 获取被点击的元素
         var target = event.target
         // 得到被点击的元素后, 通过查看它的 class 来判断它是哪个按钮
