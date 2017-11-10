@@ -8,6 +8,7 @@ body {
     height: 700px;
     background: #eee;
     border-radius: 10px;
+    border: #ffc21f 2px solid;
 }
 
 .todo-form {
