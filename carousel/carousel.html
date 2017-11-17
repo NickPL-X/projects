@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>轮播图</title>
+    </head>
+    <body>
+        <div class="container">
+            <!-- data-imgs 是图片总数，data-active  是当前图片下标 -->
+            <div class="slide" data-imgs="3" data-active="0">
+                <img id="id-image-0" class="slide-image active" src="slideimages/1" alt="">
+                <img id="id-image-1" class="slide-image" src="slideimages/2" alt="">
+                <img id="id-image-2" class="slide-image" src="slideimages/3" alt="">
+                <button class="slide-button" data-offset="-1">&lt;</button>
+                <button class="slide-button" data-offset="1">&gt;</button>
+                <div class="slide-indicators">
+                    <div id="id-indi-0" class="slide-indi white" data-index="0"></div>
+                    <div id="id-indi-1" class="slide-indi" data-index="1"></div>
+                    <div id="id-indi-2" class="slide-indi" data-index="2"></div>
+                </div>
+            </div>
+        </div>
+        <script src="carousel.js"></script>
+        <script src="../utilities.js"></script>
+    </body>
+</html>
