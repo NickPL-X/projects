@@ -154,3 +154,21 @@ var closest = function(element, selector){
         return closestTag(element, tag)
     }
 }
+var ajax = function(method, path, data, responseCallback) {
+    // 发送登录数据
+    var r = new XMLHttpRequest()
+    // 设置请求方法和请求地址
+    r.open(method, path, true)
+    // 设置发送的数据的格式
+    r.setRequestHeader('Content-Type', 'application/json')
+    // 注册响应函数
+    r.onreadystatechange = function() {
+        if (r.readyState == 4) {
+            responseCallback(r.response)
+        }
+    }
+    // 处理 data
+    data = JSON.stringify(data)
+    // 发送请求
+    r.send(data)
+}
