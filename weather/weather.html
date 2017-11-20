@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title> 天气</title>
+        <script src="https://cdn.bootcss.com/echarts/3.8.5/echarts-en.common.js"></script>
+    </head>
+    <body>
+        <div id="main" style="width: 600px;height:400px;"></div>
+        <script type="text/javascript">
+            var log = console.log.bind(console)
+            var ajax = function(request) {
+                var r = new XMLHttpRequest()
+                r.open(request.method, request.url, true)
+                if (request.contentType != undefined) {
+                    r.setRequestHeader('Content-Type', request.contentType)
+                }
+                r.onreadystatechange = function() {
+                    if (r.readyState == 4) {
+                        request.callback(r.response)
+                    }
+                }
+                if (request.method == 'GET') {
+                    r.send()
+                } else {
+                    r.send(request.data)
+                }
+            }
+
+            var callback = function(data) {
+                var r = JSON.parse(data)
+                log(r)
+                buildCharset(r)
+            }
+
+            var buildCharset = function(data) {
+                log(data)
+                var myChart = echarts.init(document.querySelector('#main'))
+                var weather = data.HeWeather5[0]
+                log('weather', weather)
+                var basic = weather.basic
+                log('basic', basic)
+                var daily = weather.daily_forecast
+                log('daily', daily)
+                var option = {
+                    title: {
+                        text: '未来三天气温变化',
+                        subtext: `${basic.cnty}+${basic.city}`
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data:['最高气温','最低气温']
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            dataZoom: {
+                                yAxisIndex: 'none'
+                            },
+                            dataView: {readOnly: false},
+                            magicType: {type: ['line', 'bar']},
+                            restore: {},
+                            saveAsImage: {}
+                        }
+                    },
+                    xAxis:  {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: []
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLabel: {
+                            formatter: '{value} °C'
+                        }
+                    },
+                    series: [
+                        {
+                            name:'最高气温',
+                            type:'line',
+                            data:[],
+                            markPoint: {
+                                data: [
+                                    // {type: 'max', name: '最大值'},
+                                    // {type: 'min', name: '最小值'}
+                                ]
+                            },
+                            markLine: {
+                                data: [
+                                    {type: 'average', name: '平均值'}
+                                ]
+                            }
+                        },
+                        {
+                            name:'最低气温',
+                            type:'line',
+                            data:[],
+                            markPoint: {
+                                data: [
+                                    // {name: ' 三日最低', value: -2, xAxis: 1, yAxis: -1.5}
+                                ]
+                            },
+                            markLine: {
+                                data: [
+                                    {type: 'average', name: '平均值'},
+                                    [{
+                                        symbol: 'none',
+                                        x: '90%',
+                                        yAxis: 'max'
+                                    }, {
+                                        symbol: 'circle',
+                                        label: {
+                                            normal: {
+                                                position: 'start',
+                                                formatter: '最大值'
+                                            }
+                                        },
+                                        type: 'max',
+                                        name: '最高点'
+                                    }]
+                                ]
+                            }
+                        }
+                    ]
+                };
+
+                for (var i = 0; i < daily.length; i++) {
+                    var day = daily[i]
+                    option.xAxis.data.push(day.date)
+                    option.series[0].data.push(day.tmp.max)
+                    option.series[1].data.push(day.tmp.min)
+                }
+                myChart.setOption(option)
+            }
+
+            var __main = function() {
+
+                var url = 'https://free-api.heweather.com/v5/forecast?city=beijing&key=cf593a346fd04577b4aef597c6868643'
+                var method = 'GET'
+
+                var request = {
+                    url: url,
+                    method: method,
+                    callback: callback,
+                }
+                ajax(request)
+            }
+            __main()
+        </script>
+    </body>
+</html>
