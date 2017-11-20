@@ -6,7 +6,7 @@ var showImageAtIndex = function(slide, index) {
     var className = 'active'
     removeClassAll(className)
     // 得到下一张图片的选择器
-    var nextSelector = '#id-image' + String(nextIndex)
+    var nextSelector = '#id-image-' + String(nextIndex)
     var img = e(nextSelector)
     img.classList.add(className)
     // 切换小圆点
@@ -15,7 +15,7 @@ var showImageAtIndex = function(slide, index) {
     removeClassAll(indiClassName)
     // 得到下一个小圆点的选择器
     var nextIndiSelecter = '#id-indi-' + String(nextIndex)
-    var indicator = e(indiSelector)
+    var indicator = e(nextIndiSelecter)
     indicator.classList.add(indiClassName)
 }
 
@@ -37,11 +37,11 @@ var bindEventSlide = function() {
         var index = nextIndex(slide, offset)
         // 按 index 切换 class
         showImageAtIndex(slide, index)
-    }
+    })
 }
 // 绑定小圆点
 var bindEventIndicator = function() {
-    var selector = 'slide-indi'
+    var selector = '.slide-indi'
     bindAll(selector, 'click', function(event) {
         var self = event.target
         var index = Number(self.dataset.index)
@@ -51,7 +51,7 @@ var bindEventIndicator = function() {
 }
 
 // 播放下一张
-var autoPlay = function() {
+var playNextImage = function() {
     var slide = e('.slide')
     var index = nextIndex(slide, 1)
     showImageAtIndex(slide, index)

@@ -1,0 +1,57 @@
+.slide-image {
+    display: none;
+}
+.active {
+    display: block;
+}
+
+.slide {
+    position: relative;
+    margin: 0 auto;
+    width: 790px;
+    top: 40px;
+}
+.slide-button {
+    height: 50px;
+    width: 30px;
+    background: #887f7f;
+    opacity: 0.3;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+.left {
+    left: 0;
+}
+.right {
+    right: 0;
+}
+.vertical-center {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.slide-indicators {
+    position: absolute;
+    /* left 是相对父元素来移动的 */
+    left: 50%;
+    bottom: 15px;
+    text-align: center;
+    /* translate 是相对元素本身来移动的 */
+    transform: translateX(-50%);
+    padding: 1px 12px;
+    border-radius: 18px;
+    background-color: hsla(108, 12%, 87%, 0.3);
+}
+.slide-indi {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: red;
+}
+
+.white {
+    background: white;
+}
