@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>弹窗组件</title>
+        <style media="screen">
+        .main-button {
+            width: 200px;
+            font-size: 25px;
+        }
+        </style>
+        <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <div class="main">
+            <button class="main-button" id="alert" type="button">alert</button>
+            <button class="main-button" id="alert2" type="button">alert2</button>
+            <button class="main-button" id="prompt" type="button">prompt</button>
+            <button class="main-button" id="actions" type="button">actions</button>
+        </div>
+        <script type="text/javascript">
+            /*
+            title 是 string
+            message 是 string
+            这个函数生成一个弹窗插入页面
+            弹窗包含 title 作为标题 和 message 作为信息
+            还包含一个 OK 按钮
+            点击 OK 按钮关闭弹窗
+            */
+            var alert = function(title, message) {
+                var t = `
+                    <div class="popup">
+                        <div class="popup-mask"></div>
+                        <div class="popup-alert vertical-center">
+                            <div class="popup-title">
+                                ${title}
+                            </div>
+                            <div class="popup-message">
+                                ${message}
+                            </div>
+                            <button class="button-ok" type="button" name="button">ok</button>
+                        </div>
+                    </div>
+                `
+                var css = `
+                    .popup {
+                        position: fixed;
+                        left: 0px;
+                        top: 0px;
+                        width: 100%;
+                        height: 100%;
+                    }
+                    .popup-mask {
+                        position: fixed;
+                        left: 0px;
+                        top: 0px;
+                        width: 100%;
+                        height: 100%;
+                        background: black;
+                        opacity: 0.5;
+                    }
+                    .popup-alert {
+                        margin: 0 auto;
+                        width: 200px;
+                        opacity: 1;
+                        background: red;
+                    }
+                    .popup-title {
+                        text-align: center;
+                        font-size: 30px;
+                        background: oldlace;
+                    }
+                    .popup-message {
+                        padding: 10px 5px;
+                        text-align: center;
+                        background: lightcoral;
+                    }
+                    .button-ok {
+                        width: 100%;
+                        height: 100%;
+                        border-color: lightblue;
+                        font-size: 25px;
+                    }
+                    .vertical-center {
+                        top: 50%;
+                        position: relative;
+                        transform: translateY(-50%);
+                    }
+                `
+                    $('body').append(t)
+                    $('style').append(css)
+                    $('.button-ok').on('click', function(event) {
+                        $('.popup').remove('.popup')
+                    })
+            }
+            /*
+            title 是 string
+            message 是 string
+            callback 是一个接受一个 bool 类型参数的函数
+
+            这个函数生成一个弹窗插入页面
+            弹窗包含 title 作为标题 和 message 作为信息
+            还包含一个 OK 按钮 和一个 Cancel 按钮
+            点击 OK 按钮关闭弹窗, 调用 callback(true)
+            点击 Cancel 按钮关闭弹窗, 调用 callback(false)
+            */
+            var alert2 = function(title, message, callback) {
+                var t = `
+                    <div class="popup">
+                        <div class="popup-mask"></div>
+                        <div class="popup-alert vertical-center">
+                            <div class="popup-title">
+                                ${title}
+                            </div>
+                            <div class="popup-message">
+                                ${message}
+                            </div>
+                            <div class="button">
+                                <button class="button-ok" type="button" name="button">ok</button>
+                                <button class="button-cancel" type="button" name="button">cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                `
+                var css = `
+                    .popup {
+                        position: fixed;
+                        left: 0px;
+                        top: 0px;
+                        width: 100%;
+                        height: 100%;
+                    }
+                    .popup-mask {
+                        position: fixed;
+                        left: 0px;
+                        top: 0px;
+                        width: 100%;
+                        height: 100%;
+                        background: black;
+                        opacity: 0.5;
+                    }
+                    .popup-alert {
+                        margin: 0 auto;
+                        width: 200px;
+                        opacity: 1;
+                        background: red;
+                    }
+                    .popup-title {
+                        text-align: center;
+                        font-size: 30px;
+                        background: oldlace;
+                    }
+                    .popup-message {
+                        padding: 10px 5px;
+                        text-align: center;
+                        background: lightcoral;
+                    }
+                    .button {
+                        font-size: 0;
+                    }
+                    .button-ok {
+                        width: 50%;
+                        height: 100%;
+                        border-color: lightblue;
+                        font-size: 25px;
+                    }
+                    .button-cancel {
+                        width: 50%;
+                        height: 100%;
+                        border-color: lightblue;
+                        font-size: 25px;
+                    }
+                    .vertical-center {
+                        top: 50%;
+                        position: relative;
+                        transform: translateY(-50%);
+                    }
+                `
+                    $('body').append(t)
+                    $('style').append(css)
+                    $('.button').on('click', function(event) {
+                        var button = $(event.target)
+                        if(button.attr('class') === 'button-ok') {
+                            callback(true)
+                        }
+                        if(button.attr('class') === 'button-cancel') {
+                            callback(false)
+                        }
+                        $('.popup').remove('.popup')
+                    })
+            }
+
+            /*
+            title 是 string
+            callback 是一个如下的函数
+            function(clickOk, input) {
+                // clickOk 是一个 bool 表明点击的是 OK 还是 Cancel
+                // input 是 string
+            }
+
+            这个函数生成一个弹窗插入页面
+            弹窗包含 title 作为标题
+            包含一个 input 让用户输入信息
+            还包含一个 OK 按钮 和一个 Cancel 按钮
+            点击 OK 按钮关闭弹窗, 调用 callback(true, 输入的内容)
+            点击 Cancel 按钮关闭弹窗, 调用 callback(false)
+            */
+            var prompt = function(title, callback) {
+                var t = `
+                    <div class="popup">
+                        <div class="popup-mask"></div>
+                        <div class="popup-alert vertical-center">
+                            <div class="popup-title">
+                                ${title}
+                            </div>
+                            <div class="popup-message">
+                                <input class="popup-input" type="text">
+                            </div>
+                            <div class="button">
+                                <button class="button-ok" type="button" name="button">ok</button>
+                                <button class="button-cancel" type="button" name="button">cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                `
+                var css = `
+                    .popup {
+                        position: fixed;
+                        left: 0px;
+                        top: 0px;
+                        width: 100%;
+                        height: 100%;
+                    }
+                    .popup-mask {
+                        position: fixed;
+                        left: 0px;
+                        top: 0px;
+                        width: 100%;
+                        height: 100%;
+                        background: black;
+                        opacity: 0.5;
+                    }
+                    .popup-alert {
+                        margin: 0 auto;
+                        width: 200px;
+                        opacity: 1;
+                        background: red;
+                    }
+                    .popup-title {
+                        text-align: center;
+                        font-size: 30px;
+                        background: oldlace;
+                    }
+                    .popup-message {
+                        padding: 10px 5px;
+                        text-align: center;
+                        background: lightcoral;
+                    }
+                    .popup-input {
+                        border-color: lightblue;
+                    }
+                    .button {
+                        font-size: 0;
+                    }
+                    .button-ok {
+                        width: 50%;
+                        height: 100%;
+                        border-color: lightblue;
+                        font-size: 25px;
+                    }
+                    .button-cancel {
+                        width: 50%;
+                        height: 100%;
+                        border-color: lightblue;
+                        font-size: 25px;
+                    }
+                    .vertical-center {
+                        top: 50%;
+                        position: relative;
+                        transform: translateY(-50%);
+                    }
+                `
+                    $('body').append(t)
+                    $('style').append(css)
+                    $('.button').on('click', function(event) {
+                        var button = $(event.target)
+                        if(button.attr('class') === 'button-ok') {
+                            var input = $('.popup-input').val()
+                            callback(true, input)
+                        }
+                        if(button.attr('class') === 'button-cancel') {
+                            callback(false)
+                        }
+                        $('.popup').remove('.popup')
+                    })
+            }
+            /*
+            title 是 string
+            actions 是一个包含 string 的数组
+            callback 是一个如下的函数
+            function(index) {
+                // index 是下标, 具体如下
+                // index 如果是 -1 表明用户点击了 cancel
+            }
+
+            这个函数生成一个弹窗页面
+            弹窗包含 title 作为标题
+            actions 里面的 string 作为标题生成按钮
+            弹窗还包含一个 Cancel 按钮
+            点击按钮的时候, 调用 callback(index)
+            */
+            var actions = function(title, options, callback) {
+                var button = function(title, index) {
+                    var t = `
+                        <button class="action-button" data-index="${index}">${title}</button>
+                    `
+                    return t
+                }
+                var buttons = []
+                for (var i = 0; i < options.length; i++) {
+                    var a = options[i]
+                    buttons.push(button(a, i))
+                }
+                var actionButtons = buttons.join('')
+                var t = `
+                    <div class="popup">
+                        <div class="popup-mask"></div>
+                        <div class="popup-alert vertical-center">
+                            <div class="popup-title">
+                                ${title}
+                            </div>
+                            <div class="popup-message">
+                                ${actionButtons}
+                            </div>
+                            <div class="button">
+                                <button class="button-cancel action-button" type="button" data-index="-1">cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                `
+                var css = `
+                    .popup {
+                        position: fixed;
+                        left: 0px;
+                        top: 0px;
+                        width: 100%;
+                        height: 100%;
+                    }
+                    .popup-mask {
+                        position: fixed;
+                        left: 0px;
+                        top: 0px;
+                        width: 100%;
+                        height: 100%;
+                        background: black;
+                        opacity: 0.5;
+                    }
+                    .popup-alert {
+                        margin: 0 auto;
+                        width: 200px;
+                        opacity: 1;
+                        background: red;
+                    }
+                    .popup-title {
+                        text-align: center;
+                        font-size: 30px;
+                        background: oldlace;
+                    }
+                    .popup-message {
+                        padding: 10px 5px;
+                        text-align: center;
+                        background: lightcoral;
+                    }
+                    .popup-input {
+                        border-color: lightblue;
+                    }
+                    .button {
+                        height: 100%;
+                        width: 100%;
+                        font-size: 0;
+                    }
+                    .action-button {
+                        width: 100%;
+                    }
+                    .button-cancel {
+                        width: 100%;
+                        height: 100%;
+                        border-color: lightblue;
+                        font-size: 25px;
+                    }
+                    .vertical-center {
+                        top: 50%;
+                        position: relative;
+                        transform: translateY(-50%);
+                    }
+                `
+                    $('body').append(t)
+                    $('style').append(css)
+                    $('.action-button').on('click', function(event) {
+                        var index = $(event.target).data('index')
+                        callback(index)
+                        $('.popup').remove('.popup')
+                    })
+            }
+
+            var bindAll = function() {
+                $('.main-button').on('click', function() {
+                    var button = $(event.target)
+                    if (button.text() == 'alert') {
+                        var title = 'alert1'
+                        var message = '这是 alert1'
+                        alert(title, message)
+                        // console.log('alert')
+                    } else if (button.text() == 'alert2') {
+                        var title = 'alert2'
+                        var message = '这是 alert2'
+                        alert2(title, message, function(i) {
+                            console.log(i)
+                        })
+                        // console.log('alert2')
+                    } else if (button.text() == 'prompt') {
+                        var title = 'prompt'
+                        prompt(title, function(...args) {
+                            console.log(...args)
+                        })
+                        // console.log('promp')
+                    } else if (button.text() == 'actions') {
+                        var options = ['野尻','贾贵','白翻译','黄金标','石青山','黑藤','水根']
+                        var title = 'make a choice'
+                        actions(title, options, function(index) {
+                            console.log(index)
+                        })
+                        // console.log('actions')
+                    }
+                })
+            }
+
+            bindAll()
+        </script>
+    </body>
+</html>
