@@ -83,6 +83,7 @@ const saveMovie = (movies) => {
     // JSON.stringify 第 2 3 个参数配合起来是为了让生成的 json
     // 数据带有缩进的格式，第三个参数表示缩进的空格数
     let s = JSON.stringify(movies, null, 2)
+    // console.log(s)
     // 把 json 格式字符串写入到文件中
     let path = 'mtimetop100.txt'
     fs.writeFileSync(path, s)
@@ -109,6 +110,7 @@ const _main = () => {
     for (let i = 2; i <= 10; i++) {
         let u = url + `index-${i}.html`
         let moviesInPage = moviesFromUrl(u)
+        console.log(moviesInPage)
         // 这个是 ES6 的语法
         movies = [...movies, ...moviesInPage]
         // 常规语法
