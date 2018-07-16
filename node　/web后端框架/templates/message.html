@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>留言板</title>
+</head>
+<body>
+    <form action="/message" method="post">
+        <textarea name="content" rows="8" cols="40"></textarea>
+        <button type="submit">POST 提交</button>
+    </form>
+    <pre>{{messages}}</pre>
+</body>
+</html>
