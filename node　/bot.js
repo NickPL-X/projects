@@ -1,9 +1,4 @@
 
-const log = (...args) => {
-    console.log.apply(console, args)
-}
-
-
 // 解析协议
 const protocolOfUrl = (url) => {
     if(url.includes('https')) {
@@ -254,7 +249,7 @@ const get = (url, query, callback) => {
         // 因为不知道一共有多少数据, 所以需要不断累加, 最后就可以获得所有数据
         // 拼接字符串
         s = s + r
-        log(s)
+        console.log(s)
     })
     client.on('end', () => {
         // 现在 s 是完整的数据了, 在这里调用解析响应的函数的函数得到 html
